@@ -1,12 +1,16 @@
 require_relative 'request_base'
+require_relative 'validated'
 
 module ImlLogisticsApi
   class DeliveryRequest < RequestBase
-    def to_xml
-      super do |xml_builder|
-        xml_builder.send('DeliveryRequest')
-        yield xml_builder
-      end
-    end
+    include ImlLogisticsApi::Validated
+
+    xml_options tag: 'DeliveryRequest'
+    field :message, use: 'R', type: ImlLogisticsApi::Message
+    field :orders, use: 'R', array: true, type: ImlLogisticsApi::Order
+  end
+
+  def initialize
+    @orders = []
   end
 end

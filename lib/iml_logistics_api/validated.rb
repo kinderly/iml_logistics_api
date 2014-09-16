@@ -1,5 +1,5 @@
 require_relative 'exceptions'
-
+require 'date'
 module ImlLogisticsApi
   module Validated
     attr_reader :errors
@@ -9,6 +9,15 @@ module ImlLogisticsApi
     end
 
     module ClassMethods
+      def xml_options(options = {})
+        @xml_options = options
+        @xml_options[:tag] ||= self.name
+      end
+
+      def get_xml_options
+        @xml_options
+      end
+
       def field(*args)
         options = extract_options(args)
         @fields ||= {}
@@ -18,6 +27,10 @@ module ImlLogisticsApi
           @fields[field] = options
           attr_accessor field
         end
+      end
+
+      def fields
+        @fields
       end
 
       def get_validator(pattern)
@@ -42,10 +55,10 @@ module ImlLogisticsApi
         match_regex = Regexp.new("^[#{char_patterns.join}]#{quantity_pattern}$")
 
         if symbols.include?('a')
-          return lambda {|v| !v.match(match_regex).nil?}
+          return lambda {|v| !v.to_s.match(match_regex).nil?}
         else
           if precision
-            max_decimal = 10 ** quantity_decimal_length
+            max_decimal = 10 ** precision
             return lambda{|v| (v.is_a? Numeric) && ( (v * max_decimal) % 1 == 0) }
           else
             if quantity
@@ -103,7 +116,7 @@ module ImlLogisticsApi
     def valid?
       @errors = []
 
-      @fields.each do |field, options|
+      self.class.fields.each do |field, options|
         value = self.send(field)
         validate_field(field, value, options)
       end
@@ -111,17 +124,76 @@ module ImlLogisticsApi
       errors.empty?
     end
 
+    def to_xml(xml_builder = nil, &block)
+      if xml_builder.nil?
+        Nokogiri::XML::Builder.new do |xml|
+          to_xml_internal(xml, &block)
+        end.to_xml
+      else
+        to_xml_internal(xml_builder, &block)
+      end
+    end
+
     protected
 
+    def to_xml_internal(xml_builder)
+      options = self.class.get_xml_options
+      fields = self.class.fields
+      xml_builder.send(options[:tag]) do
+        fields.each do |f, f_options|
+          value = self.send(f)
+          next if value.nil?
+
+          if f_options[:type]
+            if f_options[:array]
+              if f_options[:tag]
+                xml_builder.send(f_options[:tag]) do
+                  value.each do |item|
+                    item.to_xml(xml_builder)
+                  end
+                end
+              else
+                value.each do |item|
+                  item.to_xml(xml_builder)
+                end
+              end
+            else
+              value.to_xml(xml_builder)
+            end
+          else
+            xml_builder.send(f_options[:tag] || f) do
+              xml_builder.text(format_field(f, value, f_options))
+            end
+          end
+
+        end
+        yield xml_builder if block_given?
+      end
+    end
+
+    def format_field(field, value, options)
+      if value.is_a?(DateTime)
+        value.strftime('%Y-%m-%dT%H:%M:%S')
+      elsif value.is_a?(Date)
+        value.strftime('%Y-%m-%d')
+      else
+        value.to_s
+      end
+    end
+
     def validate_field(field, value, options)
-      if !options[:validator].call(value)
-        add_error(field, value, "Invalid value '#{value}' for field '#{field}.")
+      if options[:use] == 'R'&& value.nil?
+        add_error(field, value, "Field '#{field}' is required.")
+      end
+
+      if !options[:validator].call(format_field(field, value, options))
+        add_error(field, value, "Invalid value '#{value}' for field '#{field}'.")
       end
     end
 
     def add_error(field, value, message)
       @errors << {
-        field: fiels,
+        field: field,
         value: value,
         message: message
       }

@@ -5,8 +5,6 @@ describe ImlLogisticsApi::Validated do
     @klass = Class.new.include(ImlLogisticsApi::Validated)
   end
 
-
-
   describe '#get_validator' do
     it 'handles alphabetical patterns' do
       validator = @klass.get_validator('a')

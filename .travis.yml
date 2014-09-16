@@ -1,0 +1,11 @@
+language: ruby
+rvm:
+  - 1.9.3
+  - 2.0.0-p247
+  - 2.1.2
+install: "bundle install --path vendor/bundle"
+cache:
+  directories:
+    - vendor/bundle
+script: "bundle exec rspec"
+

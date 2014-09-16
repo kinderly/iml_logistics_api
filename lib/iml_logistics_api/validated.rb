@@ -39,7 +39,7 @@ module ImlLogisticsApi
         symbols, strict, quantity, precision = parsed
 
         char_patterns = []
-        char_patterns << '\p{L}' if symbols.include?('a')
+        char_patterns << '\D' if symbols.include?('a')
         char_patterns << '\d' if symbols.include?('n')
 
         quantity_pattern = if quantity
@@ -52,40 +52,13 @@ module ImlLogisticsApi
           '*'
         end
 
-        match_regex = Regexp.new("^[#{char_patterns.join}]#{quantity_pattern}$")
-
-        if symbols.include?('a')
-          return lambda {|v| !v.to_s.match(match_regex).nil?}
+        if precision
+          match_regex = Regexp.new("^[#{char_patterns.join}]#{quantity_pattern}(\\.\\d{1,#{precision}})?$")
         else
-          if precision
-            max_decimal = 10 ** precision
-            return lambda{|v| (v.is_a? Numeric) && ( (v * max_decimal) % 1 == 0) }
-          else
-            if quantity
-              max = 10 ** quantity.to_i
-              min = 10 ** (quantity.to_i - 1) if strict
-              return lambda{|v|
-                if v.is_a? String
-                  !v.match(match_regex).nil?
-                elsif v.is_a? Integer
-                  v < max && (min.nil? || min <= v)
-                else
-                  !v.to_s.match(match_regex).nil?
-                end
-              }
-            else
-              return lambda { |v|
-                if v.is_a? String
-                  !v.match(match_regex).nil?
-                elsif v.is_a? Integer
-                  true
-                else
-                  !v.to_s.match(match_regex).nil?
-                end
-              }
-            end
-          end
+          match_regex = Regexp.new("^[#{char_patterns.join}]#{quantity_pattern}$")
         end
+
+        return lambda {|v| !v.match(match_regex).nil?}
       end
 
       def parse_pattern(pattern)
@@ -187,7 +160,7 @@ module ImlLogisticsApi
       end
 
       if !options[:validator].call(format_field(field, value, options))
-        add_error(field, value, "Invalid value '#{value}' for field '#{field}'.")
+        add_error(field, value, "Invalid value '#{value}' for field '#{field}' (#{options[:pattern]}).")
       end
     end
 

@@ -1,8 +1,6 @@
-require 'spec_helper'
-
 describe ImlLogisticsApi::Validated do
   before :each do
-    @klass = Class.new.include(ImlLogisticsApi::Validated)
+    @klass = Class.new.include(described_class)
   end
 
   describe '#get_validator' do
@@ -17,7 +15,7 @@ describe ImlLogisticsApi::Validated do
       expect(validator.call('abc12')).to be_falsey
 
       validator = @klass.get_validator('an')
-      expect(validator.call('abc12_%')).to be_falsey
+      expect(validator.call('abc12_%')).to be_truthy
     end
 
     it 'handles alphabetical patterns with max length' do
@@ -45,7 +43,7 @@ describe ImlLogisticsApi::Validated do
 
     it 'handles numeric patterns' do
       validator = @klass.get_validator('n')
-      expect(validator.call(123)).to be_truthy
+      expect(validator.call('123')).to be_truthy
 
       validator = @klass.get_validator('n')
       expect(validator.call('abc12')).to be_falsey
@@ -64,20 +62,31 @@ describe ImlLogisticsApi::Validated do
       validator = @klass.get_validator('n..2')
       expect(validator.call('1')).to be_truthy
       expect(validator.call('12')).to be_truthy
-      expect(validator.call(1)).to be_truthy
-      expect(validator.call(12)).to be_truthy
-      expect(validator.call(123)).to be_falsey
-      expect(validator.call(1.2)).to be_falsey
+      expect(validator.call('1')).to be_truthy
+      expect(validator.call('12')).to be_truthy
+      expect(validator.call('123')).to be_falsey
+      expect(validator.call('1.2')).to be_falsey
     end
 
     it 'handles numeric patterns with strict length' do
       validator = @klass.get_validator('n2')
       expect(validator.call('1')).to be_falsey
       expect(validator.call('12')).to be_truthy
-      expect(validator.call(1)).to be_falsey
-      expect(validator.call(12)).to be_truthy
-      expect(validator.call(123)).to be_falsey
-      expect(validator.call(1.2)).to be_falsey
+      expect(validator.call('1')).to be_falsey
+      expect(validator.call('12')).to be_truthy
+      expect(validator.call('123')).to be_falsey
+      expect(validator.call('1.2')).to be_falsey
+    end
+
+    it 'handles numeric patterns with precision' do
+      validator = @klass.get_validator('n..18,2')
+      expect(validator.call('1')).to be_truthy
+      expect(validator.call('12')).to be_truthy
+      expect(validator.call('12')).to be_truthy
+      expect(validator.call('123')).to be_truthy
+      expect(validator.call('1.2')).to be_truthy
+      expect(validator.call('1.22')).to be_truthy
+      expect(validator.call('1.223')).to be_falsey
     end
 
     it 'raises on invalid pattern' do

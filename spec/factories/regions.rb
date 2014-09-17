@@ -1,21 +1,11 @@
 FactoryGirl.define do
   factory :region, class: ImlLogisticsApi::Region do
     departure {
-      r = nil
-      loop do
-        r = Faker::Address.state
-        break if r.length <= 20
-      end
-      r
+      ImlLogisticsApi::Region::REGIONS[rand(0..ImlLogisticsApi::Region::REGIONS.length - 1)]
     }
 
     destination {
-      r = nil
-      loop do
-        r = Faker::Address.state
-        break if r.length <= 20
-      end
-      r
+     ImlLogisticsApi::Region::REGIONS[rand(0..ImlLogisticsApi::Region::REGIONS.length - 1)]
     }
   end
 end

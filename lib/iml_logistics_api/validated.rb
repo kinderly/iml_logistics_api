@@ -99,7 +99,7 @@ module ImlLogisticsApi
 
     def to_xml(xml_builder = nil, &block)
       if xml_builder.nil?
-        Nokogiri::XML::Builder.new do |xml|
+        Nokogiri::XML::Builder.new(encoding: 'utf-8') do |xml|
           to_xml_internal(xml, &block)
         end.to_xml
       else
@@ -112,7 +112,7 @@ module ImlLogisticsApi
     def to_xml_internal(xml_builder)
       options = self.class.get_xml_options
       fields = self.class.fields
-      xml_builder.send(options[:tag]) do
+      add_tag(options[:tag], xml_builder) do
         fields.each do |f, f_options|
           value = self.send(f)
           next if value.nil?
@@ -120,7 +120,7 @@ module ImlLogisticsApi
           if f_options[:type]
             if f_options[:array]
               if f_options[:tag]
-                xml_builder.send(f_options[:tag]) do
+                add_tag(f_options[:tag], xml_builder) do
                   value.each do |item|
                     item.to_xml(xml_builder)
                   end
@@ -134,13 +134,23 @@ module ImlLogisticsApi
               value.to_xml(xml_builder)
             end
           else
-            xml_builder.send(f_options[:tag] || f) do
+            add_tag(f_options[:tag] || f, xml_builder) do
               xml_builder.text(format_field(f, value, f_options))
             end
           end
 
         end
         yield xml_builder if block_given?
+      end
+    end
+
+    def add_tag(tag_name, xml_builder)
+      if ['id', 'comment', 'text', 'type', 'class', 'test'].include?(tag_name.to_s)
+        tag_name = tag_name.to_s + '_'
+      end
+
+      xml_builder.send(tag_name) do
+        yield if block_given?
       end
     end
 
@@ -159,8 +169,11 @@ module ImlLogisticsApi
         add_error(field, value, "Field '#{field}' is required.")
       end
 
-      if !options[:validator].call(format_field(field, value, options))
-        add_error(field, value, "Invalid value '#{value}' for field '#{field}' (#{options[:pattern]}).")
+      if value
+        f_val = format_field(field, value, options)
+        if !options[:validator].call(f_val)
+          add_error(field, value, "Invalid value '#{f_val}' for field '#{field}' (#{options[:pattern]}).")
+        end
       end
     end
 

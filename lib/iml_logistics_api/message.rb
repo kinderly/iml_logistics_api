@@ -13,10 +13,5 @@ module ImlLogisticsApi
     field :version, use: 'R', pattern: 'an3'
     field :test, use: 'D', pattern: 'n1'
 
-    def initialize(sender, recipient)
-      self.sender = sender
-      self.recipient = recipient
-    end
-
   end
 end

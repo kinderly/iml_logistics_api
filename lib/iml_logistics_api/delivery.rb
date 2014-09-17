@@ -1,6 +1,5 @@
 require_relative 'validated'
 
-
 module ImlLogisticsApi
   class Delivery
     include ImlLogisticsApi::Validated

@@ -10,6 +10,8 @@ module ImlLogisticsApi
   class Order
     include ImlLogisticsApi::Validated
 
+    ACTIONS = ['CREATE']
+
     xml_options tag: 'Order'
 
     field :number, use: 'R', pattern: 'an..20'

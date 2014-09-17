@@ -1,6 +1,6 @@
 describe ImlLogisticsApi::Validated do
   before :each do
-    @klass = Class.new.include(described_class)
+    @klass = Class.new.send(:include, described_class)
   end
 
   describe '#get_validator' do

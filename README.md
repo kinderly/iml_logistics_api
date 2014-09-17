@@ -1,6 +1,7 @@
 # IML logistics API
 
 [![Build Status](https://travis-ci.org/kinderly/iml_logistics_api.svg)](https://travis-ci.org/kinderly/iml_logistics_api)
+[![Code Climate](https://codeclimate.com/github/kinderly/iml_logistics_api/badges/gpa.svg)](https://codeclimate.com/github/kinderly/iml_logistics_api)
 
 ## Description
 

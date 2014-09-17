@@ -3,6 +3,6 @@ FactoryGirl.define do
     order_number
     store_name {Faker::Company.name}
     region {Faker::Address.state}
-    barcode {Faker::Number.number(12)}
+    barcode {Faker::Number.number(13)}
   end
 end

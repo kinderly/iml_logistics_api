@@ -1,6 +1,11 @@
 FactoryGirl.define do
+  sequence :order_number do |n|
+    (10000 + n).to_s
+  end
+
+
   factory :order, class: ImlLogisticsApi::Order do
-    number {rand(10000..99999).to_s}
+    number {generate(:order_number)}
     action {
       ImlLogisticsApi::Order::ACTIONS[rand(0..ImlLogisticsApi::Order::ACTIONS.length-1)]
     }

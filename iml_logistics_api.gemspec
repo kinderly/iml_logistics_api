@@ -16,4 +16,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency('nokogiri', '~>1.6')
+  s.add_dependency('barby', '~>0.5')
 end

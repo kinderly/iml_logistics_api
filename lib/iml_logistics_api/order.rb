@@ -10,7 +10,7 @@ module ImlLogisticsApi
   class Order
     include ImlLogisticsApi::Validated
 
-    ACTIONS = ['CREATE']
+    ACTIONS = ['CREATE', 'MODIFY', 'DELETE', 'STATUS']
 
     xml_options tag: 'Order'
 

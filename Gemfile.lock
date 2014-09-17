@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     iml_logistics_api (0.1)
+      barby (~> 0.5)
       nokogiri (~> 1.6)
 
 GEM
@@ -13,6 +14,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    barby (0.6.1)
     coveralls (0.7.1)
       multi_json (~> 1.3)
       rest-client

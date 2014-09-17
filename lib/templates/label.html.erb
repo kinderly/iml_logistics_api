@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Ярлыки IML</title>
+    <style>
+      @page {
+        margin: 0;
+      }
+
+      body {
+        width: 210mm;
+        font-family: Arial;
+        margin:2mm 0 0 0;
+        padding:0;
+      }
+
+      div {
+        overflow: hidden;
+      }
+
+      .label {
+        border: 0.5mm black solid;
+        position: relative;
+        float: left;
+        height: 55.3mm;
+        width: 98mm;
+        padding: 2mm 0 0 0;
+      }
+
+      .order-number {
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .region {
+        text-align: center;
+      }
+
+      .store-name{
+        text-align: center;
+      }
+
+      .barcode{
+        position: absolute;
+        top: 25mm;
+        left: 24mm;
+        text-align: center;
+        font-size: 14pt;
+      }
+
+      .logo{
+        text-align: center;
+        position: absolute;
+        top: 4.5cm;
+        left: 1.5cm;
+      }
+
+      p {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <% @labels.each do |label| %>
+      <div class="label">
+        <div class="order-number">
+          <%= label.order_number %>
+        </div>
+        <div class="region">
+          <%= label.region %>
+        </div>
+
+        <div class="store-name">
+          <%= label.store_name %>
+        </div>
+        <div class="barcode">
+          <%= label.barcode_svg %>
+          <p><%= label.barcode_with_checksum %></p>
+        </div>
+        <div class="logo">
+          <img src='<%= label.logo_base_64 %>' alt='IMLOGISTICS'/>
+        </div>
+      </div>
+    <% end %>
+  </body>
+</html>

@@ -1,7 +1,12 @@
-require_relative 'exceptions'
+require 'nokogiri'
 require 'date'
+require_relative 'exceptions'
+
 module ImlLogisticsApi
   module Validated
+
+    XML_NAMESPACE = 'http://www.imlogistic.ru/schema/request/v1'
+
     attr_reader :errors
 
     def self.included(base)
@@ -100,19 +105,19 @@ module ImlLogisticsApi
     def to_xml(xml_builder = nil, &block)
       if xml_builder.nil?
         Nokogiri::XML::Builder.new(encoding: 'utf-8') do |xml|
-          to_xml_internal(xml, &block)
+          to_xml_internal(xml, XML_NAMESPACE, &block)
         end.to_xml
       else
-        to_xml_internal(xml_builder, &block)
+        to_xml_internal(xml_builder, nil, &block)
       end
     end
 
     protected
 
-    def to_xml_internal(xml_builder)
+    def to_xml_internal(xml_builder, namespace = nil)
       options = self.class.get_xml_options
       fields = self.class.fields
-      add_tag(options[:tag], xml_builder) do
+      add_tag(options[:tag], xml_builder, namespace) do
         fields.each do |f, f_options|
           value = self.send(f)
           next if value.nil?
@@ -144,12 +149,14 @@ module ImlLogisticsApi
       end
     end
 
-    def add_tag(tag_name, xml_builder)
+    def add_tag(tag_name, xml_builder, namespace = nil)
       if ['id', 'comment', 'text', 'type', 'class', 'test'].include?(tag_name.to_s)
         tag_name = tag_name.to_s + '_'
       end
 
-      xml_builder.send(tag_name) do
+      namespace = namespace ? {'xmlns' => namespace} : nil
+
+      xml_builder.send(tag_name, namespace) do
         yield if block_given?
       end
     end

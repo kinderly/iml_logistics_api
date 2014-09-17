@@ -1,10 +1,9 @@
-require_relative 'request_base'
 require_relative 'validated'
 require_relative 'order'
 require_relative 'message'
 
 module ImlLogisticsApi
-  class DeliveryRequest < RequestBase
+  class DeliveryRequest
     include ImlLogisticsApi::Validated
 
     xml_options tag: 'DeliveryRequest'

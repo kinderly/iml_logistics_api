@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/kinderly/iml_logistics_api.svg)](https://travis-ci.org/kinderly/iml_logistics_api)
 [![Code Climate](https://codeclimate.com/github/kinderly/iml_logistics_api/badges/gpa.svg)](https://codeclimate.com/github/kinderly/iml_logistics_api)
+[![Coverage Status](https://coveralls.io/repos/kinderly/iml_logistics_api/badge.png?branch=master)](https://coveralls.io/r/kinderly/iml_logistics_api?branch=master)
 
 ## Description
 

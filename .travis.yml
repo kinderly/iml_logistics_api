@@ -7,5 +7,5 @@ install: "bundle install --path vendor/bundle"
 cache:
   directories:
     - vendor/bundle
-script: "bundle exec rspec"
+script: "bundle exec rspec --require spec_helper"
 

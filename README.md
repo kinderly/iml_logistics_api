@@ -1,4 +1,4 @@
-# Axiomus API
+# IML logistics API
 
 [![Build Status](https://travis-ci.org/kinderly/iml_logistics_api.svg)](https://travis-ci.org/kinderly/iml_logistics_api)
 

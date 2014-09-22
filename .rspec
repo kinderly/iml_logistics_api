@@ -1,3 +1,4 @@
 -fd
 --color
 --require spec_helper
+--tag ~type:integration

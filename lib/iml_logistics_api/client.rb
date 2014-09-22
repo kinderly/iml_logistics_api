@@ -1,9 +1,9 @@
 require 'net/http'
-require_relative
+require "net/https"
 
 module ImlLogisticsApi
   class Client
-    HOST = 'imlogistic.ru'
+    HOST = 'request.imlogistic.ru'
 
     FOLDERS = {
       inbox: 'Inbox',
@@ -19,12 +19,25 @@ module ImlLogisticsApi
     end
 
     def folder_contents(folder)
-      iml_folder = FOLDERS[folder]
-      raise ImlLogisticsApi::Exceptions::Error, "Invalid folder '#{folder}'" if iml_folder.nil?
-      request(iml_folder, :get)
+      iml_folder = check_folder(folder)
+      resp = request("/#{iml_folder}", :get)
+      xml = resp.body
+      FileListResponse.parse(xml)
+    end
+
+    def get_file(folder, file)
+      path = "/#{check_folder(folder)}/#{file}"
+      resp = request(path, :get)
+      resp.body
     end
 
     protected
+
+    def check_folder(folder)
+      iml_folder = FOLDERS[folder.to_sym]
+      raise ImlLogisticsApi::Exceptions::Error, "Invalid folder '#{folder}'" if iml_folder.nil?
+      iml_folder
+    end
 
     def request(path, method)
       req = case method
@@ -36,9 +49,10 @@ module ImlLogisticsApi
         Net::HTTP::Delete.new(path)
       end
 
-      Net::HTTP.start(HOST, 80) do |http|
-        response = http.request(req)
-      end
+      req.basic_auth(@login, @password)
+      http = Net::HTTP.new(HOST, 443)
+      http.use_ssl = true
+      http.request(req)
     end
 
   end

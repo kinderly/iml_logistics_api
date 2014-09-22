@@ -32,3 +32,5 @@ bower.json
 # Sublime
 
 /*.sublime-*
+
+/spec/integration.yml

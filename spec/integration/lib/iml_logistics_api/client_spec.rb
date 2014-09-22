@@ -57,12 +57,27 @@ describe ImlLogisticsApi::Client, type: :integration do
     end
   end
 
-  describe '#clear_folder' do
-    it 'deletes all files' do
-      [:inbox, :outbox].each do |folder|
-        expect{@client.clear_folder(folder)}.not_to raise_error
-        expect(@client.folder_contents(folder)).to be_empty
-      end
+  describe '#export order' do
+    it 'exports order' do
+      order = build(:test_order)
+      res = nil
+      expect{res = @client.delivery_request(order)}.not_to raise_error
+      expect(@client.folder_contents(:inbox)).to include(res[:filename])
+      puts res[:filename]
+      puts res[:response]
+      puts res[:request]
+      @client.delete_file(:inbox, res[:filename])
+    end
+
+    it 'exports multiple orders' do
+      order = build_list(:test_order, 2)
+      res = nil
+      expect{res = @client.delivery_request(order)}.not_to raise_error
+      expect(@client.folder_contents(:inbox)).to include(res[:filename])
+      puts res[:filename]
+      puts res[:response]
+      puts res[:request]
+      @client.delete_file(:inbox, res[:filename])
     end
   end
 

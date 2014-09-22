@@ -1,4 +1,6 @@
 require_relative 'validated'
+require 'securerandom'
+require 'date'
 
 module ImlLogisticsApi
   class Message
@@ -13,5 +15,10 @@ module ImlLogisticsApi
     field :version, use: 'R', pattern: 'an3'
     field :test, use: 'D', pattern: 'n1'
 
+    def initialize
+      self.reference = SecureRandom.uuid.gsub('-', '')
+      self.issue = DateTime.now
+      self.version = '1.0'
+    end
   end
 end

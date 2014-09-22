@@ -46,5 +46,11 @@ module ImlLogisticsApi
         res_hash
       end
     end
+
+    def self.parse_file_list(xml)
+      doc = Nokogiri::XML(xml)
+      doc.xpath('FileList/fileName').map(&:text)
+    end
+
   end
 end

@@ -14,6 +14,7 @@ module ImlLogisticsApi
     end
 
     module ClassMethods
+
       def xml_options(options = {})
         @xml_options = options
         @xml_options[:tag] ||= self.name
@@ -89,6 +90,22 @@ module ImlLogisticsApi
         end
       end
 
+      def from_xml(xml)
+        options = get_xml_options
+        doc = Nokogiri::XML(xml)
+        doc.remove_namespaces!
+        el_fields = self.fields.reject {|f,opt| options[:type]} # only elementary fields for now
+        el = doc.xpath("/#{options[:tag]}")
+        res = self.new
+
+        el_fields.each do |field, f_options|
+          tag = f_options[:tag] || field
+          s_el = el.xpath(tag.to_s)
+          res.send("#{field}=", s_el.text) if s_el.any?
+        end
+
+        res
+      end
     end # ClassMethods
 
     def valid?
@@ -217,5 +234,6 @@ module ImlLogisticsApi
         message: message
       }
     end
+
   end # Validated
 end # ImlLogisticsApi

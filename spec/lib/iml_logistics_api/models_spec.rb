@@ -9,7 +9,7 @@
   ImlLogisticsApi::Region => :region,
   ImlLogisticsApi::SelfDelivery => :self_delivery,
   ImlLogisticsApi::GoodsMeasure => :goods_measure,
-  ImlLogisticsApi::Order => :order,
+  ImlLogisticsApi::Order => [:order, :test_order],
   ImlLogisticsApi::Message => [:message, :test_message],
   ImlLogisticsApi::DeliveryRequest => [:delivery_request, :test_delivery_request]
 }.each do |klass, factories|

@@ -1,7 +1,6 @@
 require 'net/http'
 require "net/https"
-require_relative "lists"
-require_relative "file_list_response"
+require_relative 'lists'
 
 
 module ImlLogisticsApi
@@ -26,7 +25,7 @@ module ImlLogisticsApi
       iml_folder = check_folder(folder)
       resp = request("/#{iml_folder}", :get)
       xml = resp.body
-      ImlLogisticsApi::FileListResponse.parse(xml)
+      ImlLogisticsApi::Lists.parse_file_list(xml)
     end
 
     # Возвращает содержимое файла в виде XML-строки
@@ -66,7 +65,6 @@ module ImlLogisticsApi
         delete_file(folder, file)
       end
     end
-
 
     # Возвращает справочник по регионам в виде массива хэшей
     def regions
@@ -110,6 +108,7 @@ module ImlLogisticsApi
       ImlLogisticsApi::Lists.parse_api_responses(xml)
     end
 
+    # Запрос на доставку заказов
     def delivery_request(orders)
       message = ImlLogisticsApi::Message.new
       message.sender = @login

@@ -34,6 +34,33 @@ module ImlLogisticsApi
       resp.body
     end
 
+    def get_all_files(folder)
+      folder_contents(folder).map do |file|
+        {
+          filename: file,
+          text: get_file(folder, file)
+        }
+      end
+    end
+
+    def put_file(folder, file, text)
+      path = "/#{check_folder(folder)}/#{file}"
+      resp = request(path, :post, text)
+      resp.body
+    end
+
+    def delete_file(folder, file)
+      path = "/#{check_folder(folder)}/#{file}"
+      resp = request(path, :delete)
+      resp.body
+    end
+
+    def clear_folder(folder)
+      folder_contents(folder).each do |file|
+        delete_file(folder, file)
+      end
+    end
+
     def regions
       xml = get_file(:list, 'Region.xml')
       ImlLogisticsApi::Lists.parse_regions(xml)
@@ -77,7 +104,7 @@ module ImlLogisticsApi
       iml_folder
     end
 
-    def request(path, method)
+    def request(path, method, text = nil)
       req = case method
       when :get
         Net::HTTP::Get.new(path)
@@ -87,6 +114,7 @@ module ImlLogisticsApi
         Net::HTTP::Delete.new(path)
       end
 
+      req.body = text if text
       req.basic_auth(@login, @password)
       http = Net::HTTP.new(HOST, 443)
       http.use_ssl = true

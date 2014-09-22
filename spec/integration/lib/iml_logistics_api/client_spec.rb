@@ -7,7 +7,7 @@ describe ImlLogisticsApi::Client, type: :integration do
   end
 
   describe '#folder_contents' do
-    it 'works' do
+    it 'lists folder contents' do
       fileList = @client.folder_contents(:list)
       expect(fileList).not_to be_empty
       puts fileList
@@ -15,7 +15,7 @@ describe ImlLogisticsApi::Client, type: :integration do
   end
 
   describe '#get_file' do
-    it 'works' do
+    it 'gets file contents' do
       fileList = @client.folder_contents(:list)
 
       fileList.each do |file|
@@ -27,5 +27,13 @@ describe ImlLogisticsApi::Client, type: :integration do
     end
   end
 
-
+  [:self_delivery, :regions, :services, :delivery_statuses, :order_statuses, :api_actions, :api_responses].each do |method|
+    describe "##{method}" do
+      it 'works' do
+        res = @client.send(method)
+        expect(res).not_to be_empty
+        puts res
+      end
+    end
+  end
 end

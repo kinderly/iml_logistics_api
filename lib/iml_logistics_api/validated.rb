@@ -176,20 +176,28 @@ module ImlLogisticsApi
         add_error(field, value, "Field '#{field}' is required.")
       end
 
-      if value
-        if value.respond_to?(:valid?)
-          if !value.valid?
-            value.errors.each do |ce|
-              add_error(field, ce[:value], "Error in '#{field}': #{ce[:message]}")
-            end
-          end
-        else
-          f_val = format_field(field, value, options)
+      return if !value
 
-          if !options[:validator].call(f_val)
-            add_error(field, value, "Invalid value '#{f_val}' for field '#{field}' (#{options[:pattern]}).")
-          end
+      if value.respond_to?(:valid?)
+        validate_subfield(field, value, options)
+      else
+        validate_elementary_field(field, value, options)
+      end
+    end
+
+    def validate_subfield(field, value, options)
+      if !value.valid?
+        value.errors.each do |ce|
+          add_error(field, ce[:value], "Error in '#{field}': #{ce[:message]}")
         end
+      end
+    end
+
+    def validate_elementary_field(field, value, options)
+      f_val = format_field(field, value, options)
+
+      if !options[:validator].call(f_val)
+        add_error(field, value, "Invalid value '#{f_val}' for field '#{field}' (#{options[:pattern]}).")
       end
     end
 

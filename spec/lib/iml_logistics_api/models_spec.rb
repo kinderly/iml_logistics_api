@@ -27,7 +27,7 @@
       end
 
       it 'it serializes as XML' do
-        expect{puts @ent.to_xml}.not_to raise_error
+        expect{@ent.to_xml}.not_to raise_error
       end
     end
   end

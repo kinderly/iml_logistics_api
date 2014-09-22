@@ -123,29 +123,38 @@ module ImlLogisticsApi
           next if value.nil?
 
           if f_options[:type]
-            if f_options[:array]
-              if f_options[:tag]
-                add_tag(f_options[:tag], xml_builder) do
-                  value.each do |item|
-                    item.to_xml(xml_builder)
-                  end
-                end
-              else
-                value.each do |item|
-                  item.to_xml(xml_builder)
-                end
-              end
-            else
-              value.to_xml(xml_builder)
-            end
+            subfield_to_xml(value, f_options, xml_builder)
           else
-            add_tag(f_options[:tag] || f, xml_builder) do
-              xml_builder.text(format_field(f, value, f_options))
-            end
+            elementary_field_to_xml(f, f_options, value, xml_builder)
           end
 
         end
+
         yield xml_builder if block_given?
+      end
+    end
+
+    def subfield_to_xml(value, options, xml_builder)
+      if options[:array]
+        if options[:tag]
+          add_tag(options[:tag], xml_builder) do
+            value.each do |item|
+              item.to_xml(xml_builder)
+            end
+          end
+        else
+          value.each do |item|
+            item.to_xml(xml_builder)
+          end
+        end
+      else
+        value.to_xml(xml_builder)
+      end
+    end
+
+    def elementary_field_to_xml(field, options, value, xml_builder)
+      add_tag(options[:tag] || field, xml_builder) do
+        xml_builder.text(format_field(field, value, options))
       end
     end
 

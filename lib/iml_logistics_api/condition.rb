@@ -28,5 +28,9 @@ module ImlLogisticsApi
     field :delivery, use: 'R', type: ImlLogisticsApi::Delivery
     field :comment, use: 'O', pattern: 'an..250'
 
+    def initialize
+      @delivery = ImlLogisticsApi::Delivery.new
+    end
+
   end
 end

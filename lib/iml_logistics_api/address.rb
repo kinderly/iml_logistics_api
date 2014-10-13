@@ -11,5 +11,9 @@ module ImlLogisticsApi
     field :detail, use: 'D', type: ImlLogisticsApi::Detail
     field :city, use: 'D', pattern: 'an..50'
     field :post_code, use: 'O', pattern: 'n6', tag: 'postCode'
+
+    def initialize
+      @detail = ImlLogisticsApi::Detail.new
+    end
   end
 end

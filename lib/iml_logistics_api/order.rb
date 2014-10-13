@@ -27,5 +27,10 @@ module ImlLogisticsApi
 
   def initialize
     @goods_items = []
+    @condition = ImlLogisticsApi::Condition.new
+    @region = ImlLogisticsApi::Region.new
+    @consignee = ImlLogisticsApi::Consignee.new
+    @self_delivery = ImlLogisticsApi::SelfDelivery.new
+    @goods_measure = ImlLogisticsApi::GoodsMeasure.new
   end
 end

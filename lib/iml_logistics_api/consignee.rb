@@ -10,5 +10,10 @@ module ImlLogisticsApi
 
     field :address, use: 'R', type: ImlLogisticsApi::Address
     field :representative_person, use: 'R', type: ImlLogisticsApi::RepresentativePerson
+
+    def initialize
+      @address = ImlLogisticsApi::Address.new
+      @representative_person = ImlLogisticsApi::RepresentativePerson.new
+    end
   end
 end

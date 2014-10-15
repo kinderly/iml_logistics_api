@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ResponseRequest>
+  <Message>
+    <sender>IM Logistics</sender>
+    <recipient>KerolaynsREG</recipient>
+    <issue>2012-03-21T12:40:12</issue>
+    <reference>77</reference>
+    <version>1.0</version>
+  </Message>
+  <Order>
+    <number>55868</number>
+    <status>OK</status>
+    <barcode>2032151452665</barcode>
+    <encodedBarcode>%!03CB5B-efcggf!</encodedBarcode>
+    <encodedType>EAN13</encodedType>
+  </Order>
+  <Order>
+    <number>55840</number>
+    <status>OK</status>
+    <barcode>2032151452672</barcode>
+    <encodedBarcode>%!03CB5B-efcghc!</encodedBarcode>
+    <encodedType>EAN13</encodedType>
+  </Order>
+</ResponseRequest>

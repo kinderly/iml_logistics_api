@@ -21,14 +21,20 @@ module ImlLogisticsApi
       end
 
       def get_xml_options
-        @xml_options
+        sc = superclass
+
+        if sc.respond_to?(:get_xml_options)
+          (sc.get_xml_options || {}).merge(@xml_options || {})
+        else
+          @xml_options
+        end
       end
 
       def field(*args)
         options = extract_options(args)
         @fields ||= {}
-
         options[:validator] = get_validator(options[:pattern])
+
         args.each do |field|
           @fields[field] = options
           attr_accessor field
@@ -36,7 +42,13 @@ module ImlLogisticsApi
       end
 
       def fields
-        @fields
+        sc = superclass
+
+        if sc.respond_to?(:fields)
+          (sc.fields || {}).merge(@fields)
+        else
+          @fields
+        end
       end
 
       def get_validator(pattern)

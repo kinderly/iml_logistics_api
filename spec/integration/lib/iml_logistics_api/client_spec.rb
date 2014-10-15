@@ -25,6 +25,14 @@ describe ImlLogisticsApi::Client, type: :integration do
         puts res
       end
     end
+
+    it 'raises on error' do
+      fileList = @client.folder_contents(:list)
+
+      fileList.each do |file|
+        expect{@client.get_file(:list, "not_existing_prefix_" + file)}.to raise_error
+      end
+    end
   end
 
   describe '#put_file' do

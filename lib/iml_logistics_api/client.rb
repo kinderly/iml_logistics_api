@@ -37,12 +37,18 @@ module ImlLogisticsApi
 
     # Возвращает содержимое всех файлов каталога в виде массива хэшей
     def get_all_files(folder)
-      folder_contents(folder).map do |file|
-        {
+      res = []
+      folder_contents(folder).each do |file|
+        el = {
           filename: file,
           text: get_file(folder, file)
         }
+
+        yield el[:filename], el[:text] if block_given?
+        res << el
       end
+
+      res
     end
 
     # Записывает файл в указанный каталог
@@ -131,6 +137,23 @@ module ImlLogisticsApi
       }
     end
 
+    def read_reponse(file)
+      xml = get_file(:outbox, file)
+      {response: ImlLogisticsApi::ResponseRequest.from_xml(xml), text: xml}
+    end
+
+    def read_all_responses
+      res = []
+
+      get_all_files(:outbox) do |filename, text|
+        response = ImlLogisticsApi::ResponseRequest.from_xml(xml)
+        res << {filename: filename, response: response, text: text}
+        yield filename, response, text if block_given
+      end
+
+      res
+    end
+
     protected
 
     def check_folder(folder)
@@ -153,7 +176,13 @@ module ImlLogisticsApi
       req.basic_auth(@login, @password)
       http = Net::HTTP.new(HOST, 443)
       http.use_ssl = true
-      http.request(req)
+      resp = http.request(req)
+
+      if '200' != resp.code.to_s
+        raise ImlLogisticsApi::Exceptions::Error, "#{resp.code} server error"
+      end
+
+      resp
     end
 
   end

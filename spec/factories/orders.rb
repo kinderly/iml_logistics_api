@@ -11,7 +11,7 @@ FactoryGirl.define do
   factory :order, class: ImlLogisticsApi::Order do
     number {generate(:order_number)}
     action {
-      ImlLogisticsApi::Order::ACTIONS[rand(0..ImlLogisticsApi::Order::ACTIONS.length-1)]
+      ImlLogisticsApi::OrderAction::ACTIONS[rand(0..ImlLogisticsApi::Order::ACTIONS.length-1)]
     }
     condition {build(:condition)}
     region {build(:region)}

@@ -12,7 +12,7 @@ module ImlLogisticsApi
     field :product_barcode, use: 'O', pattern: 'an..50', tag: 'productBarCode'
     field :coupon_code, use: 'O', pattern: 'an..80', tag: 'couponCode'
     field :discount, use: 'D',pattern: 'n..18,2'
-    field :weight, use: 'O', pattern: 'n..18,2'
+    field :weight_line, use: 'O', pattern: 'n..18,2', tag: 'weightLine'
     field :amount_line, use: 'D', pattern: 'n..18,2', tag: 'amountLine'
     field :statistical_value_line, use: 'D', pattern: 'n..18,2', tag: 'statisticalValueLine'
     field :delivery_service, use: 'O', pattern: 'n..8', tag: 'deliveryService'

@@ -149,7 +149,6 @@ module ImlLogisticsApi
       add_tag(options[:tag], xml_builder, namespace) do
         fields.each do |f, f_options|
           value = self.send(f)
-          next if value.nil?
 
           if f_options[:type]
             subfield_to_xml(value, f_options, xml_builder)
@@ -172,6 +171,7 @@ module ImlLogisticsApi
             end
           end
         else
+          return nil if value.nil?
           value.each do |item|
             item.to_xml(xml_builder)
           end
@@ -183,7 +183,7 @@ module ImlLogisticsApi
 
     def elementary_field_to_xml(field, options, value, xml_builder)
       add_tag(options[:tag] || field, xml_builder) do
-        xml_builder.text(format_field(field, value, options))
+        xml_builder.text(format_field(field, value, options)) if value
       end
     end
 

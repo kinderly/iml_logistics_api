@@ -9,6 +9,6 @@ module ImlLogisticsApi
     field :issue, use: 'R', pattern: 'an10'
     field :time_from, use: 'O', pattern: 'an8', tag: 'timeFrom'
     field :time_to, use: 'O', pattern: 'an8', tag: 'timeTo'
-
+    field :comment, use: 'O', pattern: 'an..250'
   end
 end

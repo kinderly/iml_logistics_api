@@ -3,6 +3,7 @@
   ImlLogisticsApi::Consignee => :consignee,
   ImlLogisticsApi::Detail => :detail,
   ImlLogisticsApi::Item => :item,
+  ImlLogisticsApi::Communication => :communication,
   ImlLogisticsApi::RepresentativePerson => :representative_person,
   ImlLogisticsApi::Delivery => :delivery,
   ImlLogisticsApi::Condition => :condition,

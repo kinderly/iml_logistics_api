@@ -137,18 +137,20 @@ module ImlLogisticsApi
       }
     end
 
+    # Получить ответ из файла
     def read_reponse(file)
       xml = get_file(:outbox, file)
       {response: ImlLogisticsApi::ResponseRequest.from_xml(xml), text: xml}
     end
 
+    # Прочитать и распарсить все ответы из папки Outbox
     def read_all_responses
       res = []
 
       get_all_files(:outbox) do |filename, text|
-        response = ImlLogisticsApi::ResponseRequest.from_xml(xml)
+        response = ImlLogisticsApi::ResponseRequest.from_xml(text)
         res << {filename: filename, response: response, text: text}
-        yield filename, response, text if block_given
+        yield filename, response, text if block_given?
       end
 
       res

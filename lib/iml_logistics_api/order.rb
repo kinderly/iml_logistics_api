@@ -15,14 +15,14 @@ module ImlLogisticsApi
     field :goods_measure, use: 'R', type: ImlLogisticsApi::GoodsMeasure
     field :bar_code, use: 'O', pattern: 'n13', tag: 'barCode'
     field :goods_items, use: 'R', array: true, tag: 'GoodsItems', type: ImlLogisticsApi::Item
-  end
 
-  def initialize
-    @goods_items = []
-    @condition = ImlLogisticsApi::Condition.new
-    @region = ImlLogisticsApi::Region.new
-    @consignee = ImlLogisticsApi::Consignee.new
-    @self_delivery = ImlLogisticsApi::SelfDelivery.new
-    @goods_measure = ImlLogisticsApi::GoodsMeasure.new
+    def initialize
+      @goods_items = []
+      @condition = ImlLogisticsApi::Condition.new
+      @region = ImlLogisticsApi::Region.new
+      @consignee = ImlLogisticsApi::Consignee.new
+      @self_delivery = ImlLogisticsApi::SelfDelivery.new
+      @goods_measure = ImlLogisticsApi::GoodsMeasure.new
+    end
   end
 end

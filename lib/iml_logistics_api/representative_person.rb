@@ -1,4 +1,5 @@
 require_relative 'validated'
+require_relative 'communication'
 
 module ImlLogisticsApi
   class RepresentativePerson
@@ -7,9 +8,11 @@ module ImlLogisticsApi
     xml_options tag: 'RepresentativePerson'
 
     field :name, use: 'R', pattern: 'an..250'
-    field :telephone1, use: 'R', pattern: 'an..35'
-    field :telephone2, use: 'O', pattern: 'an..35'
-    field :telephone3, use: 'O', pattern: 'an..30'
+    field :communication, use: 'R', type: ImlLogisticsApi::Communication
+
+    def initialize
+      @communication = ImlLogisticsApi::Communication.new
+    end
   end
 end
 

@@ -5,6 +5,7 @@ FactoryGirl.define do
       vals[rand(0..vals.length - 1)]
     }
     delivery {build(:delivery)}
+    comment {Faker::Hacker.say_something_smart}
   end
 end
 

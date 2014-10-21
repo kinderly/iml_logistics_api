@@ -3,7 +3,7 @@ describe ImlLogisticsApi::Client, type: :integration do
   before(:each) do
     integration_yml = File.join(File.dirname(__FILE__), "../../integration.yml")
     @iml_credentials = YAML.load(File.read(integration_yml))
-    @client = described_class.new(@iml_credentials['login'], @iml_credentials['password'], true)
+    @client = described_class.new(@iml_credentials['login'], @iml_credentials['password'], true, false)
   end
 
   describe '#folder_contents' do

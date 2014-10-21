@@ -14,10 +14,11 @@ module ImlLogisticsApi
       list: 'List'
     }
 
-    def initialize(login, password, test = false)
+    def initialize(login, password, test = false, verify_certificate = true)
       @login = login
       @password = password
       @test = test
+      @verify_certificate = verify_certificate
     end
 
     # Возвращает массив имен файлов в указанном каталоге
@@ -178,6 +179,7 @@ module ImlLogisticsApi
       req.basic_auth(@login, @password)
       http = Net::HTTP.new(HOST, 443)
       http.use_ssl = true
+      http.verify_mode = @verify_certificate ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
       resp = http.request(req)
 
       if '200' != resp.code.to_s

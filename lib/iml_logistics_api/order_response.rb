@@ -10,7 +10,7 @@ module ImlLogisticsApi
     field :encoded_barcode, use: 'O', pattern: 'an..50', tag: 'encodedBarcode'
     field :encoded_type, use: 'O', pattern: 'an..20', tag: 'encodedType'
     field :posted, use: 'O', pattern: 'n..8'
-    field :orer_status, use: 'O', pattern: 'n..8', tag: 'orderStatus'
+    field :order_status, use: 'O', pattern: 'n..8', tag: 'orderStatus'
     field :status_date, use: 'O', pattern: 'an10', tag: 'statusDate'
     field :deliveryStatus, use: 'O', pattern: 'n..8', tag: 'deliveryStatus'
     field :delivered_products, use: 'O', array: true, type: ImlLogisticsApi::DeliveredProduct

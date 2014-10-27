@@ -8,4 +8,10 @@ describe ImlLogisticsApi::OrderResponse do
     p or_a
     p or_b
   end
+
+  it 'has accessors' do
+    or_r = described_class.new
+    # expect(or_r).to respond_to(:order_status)
+    expect(or_r).to respond_to(:order_status=)
+  end
 end

@@ -24,7 +24,6 @@ module ImlLogisticsApi
       'РОСТОВ-НА-ДОНУ'
     ]
 
-
     include ImlLogisticsApi::Validated
 
     xml_options tag: 'Region'

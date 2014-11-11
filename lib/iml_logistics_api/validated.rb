@@ -107,16 +107,35 @@ module ImlLogisticsApi
         doc = Nokogiri::XML(xml)
         doc.remove_namespaces!
         el_fields = self.fields.reject {|f,opt| options[:type]} # only elementary fields for now
-        el = doc.xpath("/#{options[:tag]}")
+        el = doc.xpath("#{options[:tag]}")
         res = self.new
 
         el_fields.each do |field, f_options|
-          tag = f_options[:tag] || field
-          s_el = el.xpath(tag.to_s)
-          res.send("#{field}=", s_el.text) if s_el.any?
+          if f_options[:array]
+            if !f_options[:tag]
+              val = f_options[:type].parse_xml_array(el)
+              res.send("#{field}=", val) if !val.nil?
+            end
+          elsif f_options[:type]
+            child_options = f_options[:type].get_xml_options
+            val = f_options[:type].from_xml(el.xpath("#{child_options[:tag]}").to_s)
+            res.send("#{field}=", val) if !val.nil?
+          else
+            tag = f_options[:tag] || field
+            s_el = el.xpath(tag.to_s)
+            res.send("#{field}=", s_el.text) if s_el.any?
+          end
         end
 
         res
+      end
+
+       def parse_xml_array(xml)
+        options = get_xml_options
+        elements = xml.xpath(options[:tag])
+        elements.map do |el|
+          from_xml(el.to_s)
+        end
       end
     end # ClassMethods
 
@@ -177,7 +196,7 @@ module ImlLogisticsApi
           end
         end
       else
-        value.to_xml(xml_builder)
+        value.to_xml(xml_builder) if value
       end
     end
 

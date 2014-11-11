@@ -13,6 +13,9 @@
   ImlLogisticsApi::BaseOrder => [:base_order],
   ImlLogisticsApi::OrderAction => [:order_action],
   ImlLogisticsApi::Order => [:order, :test_order],
+  ImlLogisticsApi::BarcodeList => [:barcode_list],
+  ImlLogisticsApi::Volume => [:volume],
+  ImlLogisticsApi::OrderResponse => [:order_response],
   ImlLogisticsApi::Message => [:message, :test_message],
   ImlLogisticsApi::DeliveryRequest => [:delivery_request, :test_delivery_request]
 }.each do |klass, factories|

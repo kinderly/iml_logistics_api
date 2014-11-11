@@ -10,15 +10,25 @@
   <Order>
     <number>55868</number>
     <status>OK</status>
-    <barcode>2032151452665</barcode>
-    <encodedBarcode>%!03CB5B-efcggf!</encodedBarcode>
-    <encodedType>EAN13</encodedType>
+    <BarcodeList>
+      <Volume>
+        <position>1</position>
+        <barcode>4110766322714</barcode>
+        <encodedBarcode>'!1B07GG-dcchbe!</encodedBarcode>
+        <encodedType>EAN13</encodedType>
+      </Volume>
+    </BarcodeList>
   </Order>
   <Order>
     <number>55840</number>
     <status>OK</status>
-    <barcode>2032151452672</barcode>
-    <encodedBarcode>%!03CB5B-efcghc!</encodedBarcode>
-    <encodedType>EAN13</encodedType>
+    <BarcodeList>
+      <Volume>
+        <position>1</position>
+        <barcode>4110766322714</barcode>
+        <encodedBarcode>'!1B07GG-dcchbe!</encodedBarcode>
+        <encodedType>EAN13</encodedType>
+      </Volume>
+    </BarcodeList>
   </Order>
 </ResponseRequest>

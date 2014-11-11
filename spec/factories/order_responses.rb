@@ -2,8 +2,9 @@ FactoryGirl.define do
   factory :order_response, class: ImlLogisticsApi::OrderResponse do
     number {generate(:order_number)}
     status 'OK'
-    barcode '123456789012'
-    encoded_barcode 'MBON'
-    encoded_type 'EAN13'
+
+    trait :with_barcode do
+      barcode_list {build(:barcode_list)}
+    end
   end
 end

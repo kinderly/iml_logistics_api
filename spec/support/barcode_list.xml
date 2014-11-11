@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BarcodeList>
+  <Volume>
+    <position>1</position>
+    <barcode>123456789012</barcode>
+    <encodedBarcode>MBON</encodedBarcode>
+    <encodedType>EAN13</encodedType>
+  </Volume>
+</BarcodeList>

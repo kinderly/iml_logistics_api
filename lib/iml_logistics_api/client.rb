@@ -5,7 +5,7 @@ require_relative 'lists'
 
 module ImlLogisticsApi
   class Client
-    HOST = 'request.imlogistic.ru'
+    HOST = 'request.iml.ru'
 
     FOLDERS = {
       inbox: 'Inbox',
@@ -177,9 +177,7 @@ module ImlLogisticsApi
 
       req.body = text if text
       req.basic_auth(@login, @password)
-      http = Net::HTTP.new(HOST, 443)
-      http.use_ssl = true
-      http.verify_mode = @verify_certificate ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
+      http = Net::HTTP.new(HOST, 80)
       resp = http.request(req)
 
       if '200' != resp.code.to_s

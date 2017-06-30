@@ -16,6 +16,8 @@ module ImlLogisticsApi
     field :amount_line, use: 'D', pattern: 'n..18,2', tag: 'amountLine'
     field :statistical_value_line, use: 'D', pattern: 'n..18,2', tag: 'statisticalValueLine'
     field :delivery_service, use: 'O', pattern: 'n..8', tag: 'deliveryService'
+    field :vat_rate, use: 'R', pattern: 'n..2', tag: 'VATRate'
+    field :vat_amount, use: 'R', pattern: 'n..18,2', tag: 'VATAmount'
   end
 end
 
